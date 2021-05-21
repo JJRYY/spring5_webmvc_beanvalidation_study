@@ -34,17 +34,12 @@ public class RegistController {
 	}
 	
 	@PostMapping("/register/step3")
-	public String handleStep3(RegisterRequest regReq, Errors errors) {
+	public String handleStep3(RegisterRequest regReq) {
 //		System.out.println(regReq);
-		new RegisterRequestValidator().validate(regReq, errors);
-		if(errors.hasErrors())
-			return "register/step2";
-		
 		try {
 			memberRegisterService.regist(regReq);
 			return "/register/step3";
 		} catch (DuplicateMemberException ex) {
-			errors.rejectValue("email", "duplicate");
 			return "/register/step2";
 		}
 	}
